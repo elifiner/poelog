@@ -16,18 +16,23 @@
     return;
   }
 
-  // Scroll up until the entire conversation is loaded and then export it
+  // Scroll up until the entire conversation is loaded
+  const scrollingInterval = setInterval(() => {
+    getTopBubble().scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 1000);
+
+  // Export the conversation when scrolling stops
   let topBubble = getTopBubble();
-  topBubble.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  const loadingInterval = setInterval(() => {
+  const testingInterval = setInterval(() => {
     // If current top buble is the same as last time it means we're done loading
     const newTopBubble = getTopBubble();
     if (topBubble === newTopBubble) {
-      clearInterval(loadingInterval);
+      clearInterval(testingInterval);
+      clearInterval(scrollingInterval);
       exportConversation();
     }
     topBubble = newTopBubble;
-  }, 2000);
+  }, 5000);
 
   function getTopBubble() {
     return document.querySelectorAll(`${HUMAN_MESSAGE_BUBBLE_CLASS}, ${BOT_MESSAGE_BUBBLE_CLASS}`)[0];
@@ -51,7 +56,7 @@
     const output = `Conversation with ${botName} (${messages.length} messages)\n` + messages.map(msg => {
       const type = msg.classList.contains(HUMAN_MESSAGE_BUBBLE_CLASS.slice(1)) ? 'Human' : botName;
       const attachments = Array.from(msg.querySelectorAll(ATTACHMENT_CLASS)).map(attachment => {
-        const isImage = attachment.classList.contains(IMAGE_ATTACHMENT_CLASS.slice(1));
+        const isImage = IMAGE_ATTACHMENT_CLASS && attachment.classList.contains(IMAGE_ATTACHMENT_CLASS.slice(1));
         if (isImage) {
           const imageURL = attachment.getAttribute('src');
           const imageAlt = attachment.getAttribute('alt');

@@ -1,5 +1,10 @@
-chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.tabs.executeScript({
-    file: "content.js"
-  });
+chrome.action.onClicked.addListener(async (tab) => {
+  try {
+    await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ['content.js'],
+    });
+  } catch (err) {
+    console.error('Failed to execute content script:', err);
+  }
 });
