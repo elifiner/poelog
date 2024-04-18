@@ -4,10 +4,21 @@
   "version": "1.0",
   "description": "Download entire AI conversation log from poe.com",
   "action": {
+    "default_popup": "popup.html",
     "default_icon": "icon.png"
   },
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["activeTab", "scripting"]
+  "permissions": [
+    "activeTab",
+    "downloads"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://poe.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }
