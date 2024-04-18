@@ -1,6 +1,6 @@
 # PoeLog
 
-PoeLog is a simple Chrome extension that allows you to download a full transcript of your conversation with an AI bot on poe.com. It's particularly useful for capturing long-running conversations that you may want to use as a source of data for other purposes.
+PoeLog is a simple Chrome extension that allows you to download a full transcript of your conversation with an AI bot on poe.com. It's particularly useful for capturing long-running conversations that you may want to use as a source of data for other purposes. With the new update, you can now choose to include either just the human, just the bot, or both parties' messages in the transcript.
 
 ## Installation
 
@@ -13,8 +13,8 @@ PoeLog is a simple Chrome extension that allows you to download a full transcrip
 
 1. Navigate to poe.com and start a conversation with an AI bot.
 2. Once you've completed the conversation you want to save, click the PoeLog extension icon in the Chrome toolbar.
-3. The extension will generate a text file containing the full transcript of your conversation, including both your messages and the bot's responses.
-4. The file will be automatically downloaded to your default downloads location.
+3. In the popup that appears, use the checkboxes to select whether you want to include messages from the human, the bot, or both in the transcript.
+4. Click the "Download" button. The extension will generate a text file containing the selected transcript of your conversation and automatically download it to your default downloads location.
 
 ## Notes
 
@@ -23,7 +23,7 @@ PoeLog is a simple Chrome extension that allows you to download a full transcrip
 
 ## Contributing
 
-If you'd like to contribute to PoeLog or report any issues, please visit the [GitHub repository](https://github.com/elifiner/poelog).
+If you'd like to contribute to PoeLog, suggest new features, or report any issues, please visit the [GitHub repository](https://github.com/elifiner/poelog).
 
 ## License
 
