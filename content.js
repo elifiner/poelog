@@ -1,12 +1,3 @@
-// Find class names
-const HUMAN_MESSAGE_BUBBLE_CLASS = findClassName('Message_humanMessageBubble');
-const BOT_MESSAGE_BUBBLE_CLASS = findClassName('Message_botMessageBubble');
-
-// Check if class names were found
-if (!HUMAN_MESSAGE_BUBBLE_CLASS || !BOT_MESSAGE_BUBBLE_CLASS) {
-    console.error(`classes not found: Message_humanMessageBubble or Message_botMessageBubble`);
-}
-
 // Function to find the actual class name from the human-readable name
 function findClassName(humanReadableName) {
     const regex = new RegExp(`${humanReadableName}_+[a-zA-Z0-9_-]+`, 'g');
@@ -16,6 +7,8 @@ function findClassName(humanReadableName) {
 
 // Get the currently visible top bubble in the conversation log
 function getTopBubble() {
+    const HUMAN_MESSAGE_BUBBLE_CLASS = findClassName('Message_humanMessageBubble');
+    const BOT_MESSAGE_BUBBLE_CLASS = findClassName('Message_botMessageBubble');
     return document.querySelectorAll(`${HUMAN_MESSAGE_BUBBLE_CLASS}, ${BOT_MESSAGE_BUBBLE_CLASS}`)[0];
 }
 
@@ -23,7 +16,7 @@ async function scrollToTop() {
     return new Promise((resolve, reject) => {
         // Start scrolling up
         const scrollingInterval = setInterval(() => {
-            getTopBubble().scrollIntoView({ behavior: 'smooth', block: 'start' });
+            getTopBubble().scrollIntoView({ behavior: 'instant', block: 'start' });
         }, 1000);
 
         // Preiodically check if scrolling is done
@@ -46,6 +39,8 @@ function getTranscript({includeHuman, includeBot}) {
   console.log({includeHuman, includeBot});
 
   // Find more class names now that the entire conversation is loaded
+  const HUMAN_MESSAGE_BUBBLE_CLASS = findClassName('Message_humanMessageBubble');
+  const BOT_MESSAGE_BUBBLE_CLASS = findClassName('Message_botMessageBubble');
   const BOT_NAME_CLASS = findClassName('BotInfoCardHeader_botName');
   const CONVERSATION_NAME_CLASS = findClassName('ChatHeader_textOverflow');
   const ATTACHMENT_CLASS = findClassName('Attachments_attachment');
