@@ -7,8 +7,8 @@ function findClassName(humanReadableName) {
 
 // Get the currently visible top bubble in the conversation log
 function getTopBubble() {
-    const HUMAN_MESSAGE_BUBBLE_CLASS = findClassName('Message_humanMessageBubble');
-    const BOT_MESSAGE_BUBBLE_CLASS = findClassName('Message_botMessageBubble');
+    const HUMAN_MESSAGE_BUBBLE_CLASS = findClassName('Message_rightSideMessageBubble');
+    const BOT_MESSAGE_BUBBLE_CLASS = findClassName('Message_leftSideMessageBubble');
     return document.querySelectorAll(`${HUMAN_MESSAGE_BUBBLE_CLASS}, ${BOT_MESSAGE_BUBBLE_CLASS}`)[0];
 }
 
@@ -36,11 +36,9 @@ async function scrollToTop() {
 
 // Export the entire converation
 function getTranscript({includeHuman, includeBot}) {
-  console.log({includeHuman, includeBot});
-
   // Find more class names now that the entire conversation is loaded
-  const HUMAN_MESSAGE_BUBBLE_CLASS = findClassName('Message_humanMessageBubble');
-  const BOT_MESSAGE_BUBBLE_CLASS = findClassName('Message_botMessageBubble');
+  const HUMAN_MESSAGE_BUBBLE_CLASS = findClassName('Message_rightSideMessageBubble');
+  const BOT_MESSAGE_BUBBLE_CLASS = findClassName('Message_leftSideMessageBubble');
   const BOT_NAME_CLASS = findClassName('BotInfoCardHeader_botName');
   const CONVERSATION_NAME_CLASS = findClassName('ChatHeader_textOverflow');
   const ATTACHMENT_CLASS = findClassName('Attachments_attachment');
@@ -48,6 +46,7 @@ function getTranscript({includeHuman, includeBot}) {
   const FILE_TITLE_CLASS = findClassName('FileInfo_title');
   const FILE_TYPE_CLASS = findClassName('FileInfo_fileType');
   const MARKDOWN_CONTAINER_CLASS = findClassName('Markdown_markdownContainer');
+  const MESSAGE_PLAINTEXT_CLASS = findClassName('Message_plaintext');
 
   const botName = document.querySelector(BOT_NAME_CLASS)?.textContent.split('-')[0] || 'Bot';
   const conversationName = document.querySelector(CONVERSATION_NAME_CLASS)?.textContent;
@@ -79,7 +78,14 @@ function getTranscript({includeHuman, includeBot}) {
             }
         });
         const attachmentsList = attachments.length > 0 ? `\nAttached files:\n${attachments.join('\n')}\n` : '';
-        const messageContent = msg.querySelector(MARKDOWN_CONTAINER_CLASS)?.textContent;
+        var messageContent = '';
+        const markdownContent = msg.querySelector(MARKDOWN_CONTAINER_CLASS);
+        if (markdownContent) {
+            const turndownService = new TurndownService({codeBlockStyle: 'fenced', 'hr': '---'});
+            messageContent = turndownService.turndown(markdownContent);
+        } else {
+            messageContent = msg.querySelector(MESSAGE_PLAINTEXT_CLASS).textContent;
+        }
         return `\n${type}:\n\n${messageContent}${attachmentsList}`;
     }).join('\n');
 
